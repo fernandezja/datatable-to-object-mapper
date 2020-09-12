@@ -1,4 +1,5 @@
 using Starwars.Entities;
+using System;
 using System.Data;
 using Xunit;
 
@@ -9,7 +10,7 @@ namespace DataRowMapper.Tests
         [Fact]
         public void DataRowToObjectSimple()
         {
-            var jedisDataTable = GenerateJediDataTable();
+            var jedisDataTable = GenerateJedisDataTable();
 
             var jediDataRow = jedisDataTable.Rows[0];
 
@@ -20,7 +21,27 @@ namespace DataRowMapper.Tests
             Assert.Equal("Yoda", jedi.Name);
         }
 
-        private DataTable GenerateJediDataTable() {
+        [Fact]
+        public void DataRowToObjectManual()
+        {
+            var jedisDataTable = GenerateJedisDataTable();
+
+            var jediDataRow = jedisDataTable.Rows[0];
+
+            var jedi = new Jedi()
+            {
+                Id = Convert.ToInt32(jediDataRow["Id"]),
+                Name = Convert.ToString(jediDataRow["Name"]),
+            };
+
+
+            Assert.NotNull(jedi);
+            Assert.Equal(1, jedi.Id);
+            Assert.Equal("Yoda", jedi.Name);
+        }
+
+
+        private DataTable GenerateJedisDataTable() {
 
             var dataTable = new DataTable("Jedis");
 

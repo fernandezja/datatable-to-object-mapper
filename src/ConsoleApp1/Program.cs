@@ -10,31 +10,75 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Console.WriteLine("DataRow to Object!");
-            
 
-            DemoSimpleDataRowToObjectJedi();
+            DemoManualDataRowToObjectJedi();
+
+            DemoSimpleAutomaticDataRowToObjectJedi();
 
             Console.WriteLine("Please any key to continue...");
             Console.ReadKey();
         }
 
-        private static void DemoSimpleDataRowToObjectJedi() {
 
-            Console.WriteLine("Demo Simple: DataRow to Jedi object");
+        private static void DemoManualDataRowToObjectJedi()
+        {
+            Console.WriteLine("Demo Manual: DataRow to Jedi object");
 
-            var jedisDataTable = new DataTable("Jedis");
+            var jedisDataTable = GenerateJedisDataTable();
 
-            jedisDataTable.Columns.Add("Id", typeof(int));
-            jedisDataTable.Columns.Add("Name", typeof(string));
+            DataRow jediDataRow = jedisDataTable.Rows[0];
 
-            jedisDataTable.Rows.Add(1, "Yoda");
+            var jedi = new Jedi() { 
+                Id = Convert.ToInt32(jediDataRow["Id"]),
+                Name = Convert.ToString(jediDataRow["Name"]),
+            };
 
-            var jediDataRow = jedisDataTable.Rows[0];
+            Console.WriteLine($"Jedi: Id={jedi.Id} Name={jedi.Name}");
+
+        }
+
+
+        private static void DemoSimpleAutomaticDataRowToObjectJedi()
+        {
+            Console.WriteLine("Demo Simple Automatic: DataRow to Jedi object");
+
+            var jedisDataTable = GenerateJedisDataTable();
+
+            DataRow jediDataRow = jedisDataTable.Rows[0];
 
             var jedi = jediDataRow.ToObject<Jedi>();
 
             Console.WriteLine($"Jedi: Id={jedi.Id} Name={jedi.Name}");
 
         }
+
+
+        private static DataTable GenerateJedisDataTable()
+        {
+            var dataTable = new DataTable("Jedis");
+
+            dataTable.Columns.Add("Id", typeof(int));
+            dataTable.Columns.Add("Name", typeof(string));
+
+
+            dataTable.Rows.Add(1, "Yoda");
+            dataTable.Rows.Add(2, "Mace Windu");
+            dataTable.Rows.Add(3, "Count Dooku");
+            dataTable.Rows.Add(4, "Qui-Gon Jinn");
+            dataTable.Rows.Add(5, "Obi-Wan Kenobi");
+            dataTable.Rows.Add(6, "Anakin Skywalker");
+            dataTable.Rows.Add(7, "Ahsoka Tano");
+            dataTable.Rows.Add(8, "Cal Kestis");
+            dataTable.Rows.Add(9, "Cere Junda");
+            dataTable.Rows.Add(10, "Kanan Jarrus");
+            dataTable.Rows.Add(11, "Ezra Bridger");
+            dataTable.Rows.Add(12, "Luke Skywalker");
+            dataTable.Rows.Add(13, "Ben Solo");
+            dataTable.Rows.Add(14, "Rey");
+
+            return dataTable;
+        }
+
+   
     }
 }
